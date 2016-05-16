@@ -1,8 +1,8 @@
 package onionsss.it.onionsss.activity;
 
+import android.app.Activity;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
@@ -18,7 +18,7 @@ import onionsss.it.onionsss.R;
 import onionsss.it.onionsss.bean.User;
 import onionsss.it.onionsss.dao.UserDao;
 
-public class RegistActivity extends AppCompatActivity {
+public class RegistActivity extends Activity {
 
     @Bind(R.id.regist_edt_name)
     EditText regist_edt_name;
@@ -79,18 +79,21 @@ public class RegistActivity extends AppCompatActivity {
     }
     public void isRegist(){
         String name = regist_edt_name.getText().toString().trim();
-        if(ud.queryName(name)){
-            regist_edt_name.setText("");
-            regist_edt_name.setHint("对不起,该用户名已经被注册!");
-            regist_edt_name.setHintTextColor(Color.RED);
-            /**
-             * 因为帐号重复
-             * 所以让用户获得帐号的焦点继续 输入
-             */
-            regist_edt_name.setFocusable(true);
-            regist_edt_name.setFocusableInTouchMode(true);
-            regist_edt_name.requestFocus();
+        if (!TextUtils.isEmpty(name)){
+            if(ud.queryName(name)){
+                regist_edt_name.setText("");
+                regist_edt_name.setHint("对不起,该用户名已经被注册!");
+                regist_edt_name.setHintTextColor(Color.RED);
+                /**
+                 * 因为帐号重复
+                 * 所以让用户获得帐号的焦点继续 输入
+                 */
+                regist_edt_name.setFocusable(true);
+                regist_edt_name.setFocusableInTouchMode(true);
+                regist_edt_name.requestFocus();
+            }
         }
+
     }
     @OnClick(R.id.regist_btn_regist)
     public void onClick() {

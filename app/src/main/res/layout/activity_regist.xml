@@ -20,13 +20,20 @@
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:background="@color/gray_e8" />
-
+    <ImageView
+        android:padding="5dp"
+        android:id="@+id/login_iv_head"
+        android:layout_marginTop="25dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_width="110dp"
+        android:layout_height="110dp"
+        android:src="@mipmap/img_3"/>
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="45dp"
         android:layout_marginLeft="20dp"
         android:layout_marginRight="20dp"
-        android:layout_marginTop="55dp"
+        android:layout_marginTop="25dp"
         android:background="@color/white"
         android:gravity="center_vertical"
         android:orientation="horizontal"
@@ -89,7 +96,7 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="20dp"
         android:layout_marginRight="20dp"
-        android:layout_marginTop="45dp"
+        android:layout_marginTop="25dp"
         android:background="@drawable/button_orange"
         android:text="注册"
         android:textColor="@color/white"

@@ -1,5 +1,6 @@
 package onionsss.it.onionsss.activity;
 
+import android.app.Activity;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.KeyEvent;
@@ -7,7 +8,7 @@ import android.widget.Toast;
 
 import onionsss.it.onionsss.R;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends Activity {
     private long exitTime = 0;
 
 
@@ -15,6 +16,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        //TODO
     }
 
     @Override

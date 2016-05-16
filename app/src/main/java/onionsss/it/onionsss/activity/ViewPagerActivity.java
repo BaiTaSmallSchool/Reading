@@ -49,7 +49,7 @@ public class ViewPagerActivity extends Activity {
         for (int i = 0; i < Images.length; i++) {
             ImageView iv = new ImageView(this);
             iv.setImageResource(Images[i]);
-            iv.setScaleType(ImageView.ScaleType.FIT_XY);
+            iv.setScaleType(ImageView.ScaleType.CENTER_CROP);
             list.add(iv);
         }
     }

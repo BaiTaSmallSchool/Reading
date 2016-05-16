@@ -48,10 +48,13 @@ public class UserDao {
     public boolean queryName(String name){
         SQLiteDatabase db = mUh.getWritableDatabase();
         Cursor cursor = db.query("app_user", null, "name=?", new String[]{name}, null, null, null);
-        db.close();
         if(cursor.moveToNext()){
+            db.close();
+            cursor.close();
             return true;
         }
+        db.close();
+        cursor.close();
         return false;
     }
 
@@ -70,6 +73,7 @@ public class UserDao {
             user.setPassword(cursor.getString(cursor.getColumnIndex("password")));
         }
         db.close();
+        cursor.close();
         return user;
     }
 
