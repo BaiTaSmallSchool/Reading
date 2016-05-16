@@ -3,4 +3,83 @@
     <color name="colorPrimary">#3F51B5</color>
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FF4081</color>
+    <color name="tran_white">#c5ffffff</color>
+    <color name="black_0">#000000</color>
+    <color name="black">#808080</color>
+    <color name="black_fourbao_bg">#0a081d</color>
+    <color name="gray_light">#b5b5b5</color>
+    <color name="free_background">#dcdddd</color>
+    <color name="gray">#808080</color>
+    <color name="gray_92">#808080</color>
+    <color name="gray_dd">#dddddd</color>
+    <color name="gray_d">#1d62f0</color>
+    <color name="gray_line">#45808080</color>
+    <color name="gray_f">#f2f2f2</color>
+    <color name="gray_e">#808080</color>
+    <color name="gray_e2">#45808080</color>
+    <color name="gray_e8">#45808080</color>
+    <color name="oroung">#ee4011</color>
+    <color name="tran_oroung">#a5ee4011</color>
+    <color name="red">#ff0000</color>
+    <color name="tran_red">#a5ff0000</color>
+    <color name="boramae">#007947</color>
+    <color name="glass">#a52a5caa</color>
+    <color name="red_light">#ff5555</color>
+    <color name="share_green">#51d6b0</color>
+    <color name="ill_blue">#0079ff</color>
+    <color name="ill_green">#4cd964</color>
+    <color name="free_baoe">#46797a</color>
+    <color name="free_detail">#0b318f</color>
+    <color name="bao_blue">#3e70a7</color>
+    <color name="lighter_gray">#ddd</color>
+    <!-- 主题色、导航栏、主按钮 -->
+    <color name="orange">#ff5e33</color>
+    <color name="orange_transparent">#b2ff6700</color>
+    <color name="orange_click">#F88C00</color>
+    <color name="orange_half_transparent">#7FFF9900</color>
+    <color name="orange_dark2">#ffd565</color>
+    <color name="orange_light">#ffd200</color>
+    <!-- 辅助色（常用） -->
+    <color name="green">#77C840</color>
+    <color name="green_4d6">#4cd964</color>
+    <color name="green_click">#67B134</color>
+    <color name="green_dark">#67B134</color>
+    <color name="green_transparent_50">#7F77C840</color>
+    <!-- 辅助色（常用） -->
+    <color name="green__4d6_50">#7F4cd964</color>
+    <!-- 辅助色（常用） -->
+    <color name="blue">#2DB9F4</color>
+    <color name="blue_click">#15B0F2</color>
+    <!-- 辅助色（不常用） -->
+    <color name="purple">#BE8DF1</color>
+    <color name="purple_click">#B377EE</color>
+    <!-- 辅助色（不常用） -->
+    <color name="rose_red">#E45F5F</color>
+    <color name="rose_red_click">#E04141</color>
+    <color name="rose_red_dark">#e74c3c</color>
+    <color name="red_jifen">#e54d3b</color>
+    <!-- 部分灰色背景 -->
+    <color name="gray_background">#f2f2f2</color>
+    <color name="gray_background_click">#CCCCCC</color>
+    <!-- 边框线、间隔线 -->
+    <color name="gray_border">#CCCCCC</color>
+    <color name="gray_border_transparent_50">#7FCCCCCC</color>
+    <!-- 文字色 浅灰色 -->
+    <color name="gray_text_light">#999999</color>
+    <color name="gray_text_light_transparent_50">#7F999999</color>
+    <!-- 文字色 灰色 -->
+    <color name="gray_text_medium">#666666</color>
+    <!-- 文字色 深灰色 -->
+    <color name="gray_text_dark">#333333</color>
+    <!-- 白色 -->
+    <color name="white">#FFFFFF</color>
+    <color name="white_transparent_50">#7FFFFFFF</color>
+    <!-- 按钮点击时背景色 -->
+    <color name="orange_dark">#F88C00</color>
+    <!-- 文字色 褐色 -->
+    <color name="gray_text_brown">#862D22</color>
+    <!-- 无色 透明 -->
+    <color name="transparent">#00000000</color>
+    <color name="transparent_a5">#11000000</color>
+    <color name="transparent_55">#55000000</color>
 </resources>
