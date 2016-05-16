@@ -25,6 +25,8 @@
         </activity>
         <activity android:name=".activity.LoginActivity">
         </activity>
+        <activity android:name=".activity.RegistActivity">
+        </activity>
     </application>
 
 </manifest>
