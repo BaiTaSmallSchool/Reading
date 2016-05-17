@@ -57,17 +57,21 @@ public class SplashActivity extends Activity {
             switch (msg.what) {
                 case SPLASH_URL:
                     Toast.makeText(SplashActivity.this, "地址错误", Toast.LENGTH_SHORT).show();
+                    enterHome();
                     break;
                 case SPLASH_IO:
                     Toast.makeText(SplashActivity.this, "网络错误", Toast.LENGTH_SHORT).show();
+                    enterHome();
                     break;
                 case SPLASH_JSON:
                     Toast.makeText(SplashActivity.this, "JSON错误", Toast.LENGTH_SHORT).show();
+                    enterHome();
                     break;
                 case SPLASH_OK:
                     showDialog();
                     break;
                 case SPLASH_NO:
+                    enterHome();
                     break;
 
             }
@@ -101,7 +105,7 @@ public class SplashActivity extends Activity {
     private void initView() {
         View splashView = View.inflate(this, R.layout.activity_splash, null);
         AlphaAnimation aa = new AlphaAnimation(0.5f, 1);
-        aa.setDuration(1500);
+        aa.setDuration(1000);
         splashView.startAnimation(aa);
         setContentView(splashView);
         aa.setAnimationListener(new Animation.AnimationListener() {

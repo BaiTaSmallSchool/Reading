@@ -1,6 +1,7 @@
 package onionsss.it.onionsss.utils;
 
 import java.io.IOException;
+import java.util.concurrent.TimeUnit;
 
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
@@ -11,7 +12,10 @@ import okhttp3.Response;
  */
 public class OkUtils {
     public static Response getResponse(String url) throws IOException {
-        OkHttpClient okHttpClient_get = new OkHttpClient();
+        /**
+         * 设置三秒连接延迟
+         */
+        OkHttpClient okHttpClient = new OkHttpClient.Builder().connectTimeout(3, TimeUnit.SECONDS).build();
         // 2.请求体
         Request request = new Request.Builder()
                 .get()//get请求方式
@@ -20,7 +24,7 @@ public class OkUtils {
 
         // 3.执行okhttp
         Response response = null;
-        response = okHttpClient_get.newCall(request).execute();
+        response = okHttpClient.newCall(request).execute();
 //        System.out.println(response.body().string());
 
 

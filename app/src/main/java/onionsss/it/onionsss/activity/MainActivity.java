@@ -2,15 +2,14 @@ package onionsss.it.onionsss.activity;
 
 import android.app.Activity;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.view.KeyEvent;
 import android.widget.Toast;
 
 import onionsss.it.onionsss.R;
 
 public class MainActivity extends Activity {
-    private long exitTime = 0;
 
+    private long exitTime = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
