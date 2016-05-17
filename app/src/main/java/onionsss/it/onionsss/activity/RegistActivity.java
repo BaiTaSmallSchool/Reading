@@ -45,18 +45,21 @@ public class RegistActivity extends Activity {
         regist_edt_name.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                regist_edt_name.setHint("");
+                regist_edt_name.setHint("请输入用户名");
+                regist_edt_name.setHintTextColor(Color.GRAY);
             }
         });
         /**
-         * 设置对editText的点击监听
+         * 直接从账号输入框切换到密码输入框不会触发密码输入框的点击事件
+         * 设置对editText的焦点变化监听
          * 当点击时  判断帐号是否已经被注册
          * 如果注册过 就提示用户显示红色
+         *
          */
-        regist_edt_password.setOnClickListener(new View.OnClickListener() {
+        regist_edt_password.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+
             @Override
-            public void onClick(View v) {
-               isRegist();
+            public void onFocusChange(View v, boolean hasFocus) {isRegist();
             }
         });
         /**
