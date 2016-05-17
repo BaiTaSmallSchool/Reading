@@ -43,7 +43,7 @@ public class SplashActivity extends AppCompatActivity {
     /**
      * 更新地址URL
      */
-    private static final String UPDATE = "http://180.171.45.124:8080/update.json";
+    private static final String UPDATEPAHT = "http://180.171.45.124:8080/update.json";
     private static final String TAG = "SplashActivity";
     public static final int SPLASH_URL = 1;    //URL错误
     public static final int SPLASH_IO = 2;    //IO网络异常
@@ -133,7 +133,7 @@ public class SplashActivity extends AppCompatActivity {
             public void run() {
                 Message msg = Message.obtain();
                 try {
-                    Response response = OkUtils.getResponse(UPDATE);
+                    Response response = OkUtils.getResponse(UPDATEPAHT);
                     String json = response.body().string();
                     JSONObject object = new JSONObject(json);
                     mUj = new UpdateJson(object.getString("versionName"), object.getInt("versionCode"),
@@ -215,21 +215,24 @@ public class SplashActivity extends AppCompatActivity {
             OutputStream os = null;
             try {
                 Response response = OkUtils.getResponse(mUj.getUrl());
-                mProgressDialog.setMax((int) response.body().contentLength());
+                mProgressDialog.setMax((int) response.body().contentLength()/1024);
                 is = response.body().byteStream();
-                File rootFile = Environment.getExternalStorageDirectory();
-                File file = new File(rootFile, "down.apk");
+                File rootFile = Environment
+                        .getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS);
+                File file = new File(rootFile, "onionsss-v"+PackageUtil
+                        .getVersionCode(SplashActivity .this)+".apk");
                 os = new FileOutputStream(file);
                 byte[] b = new byte[1024];
                 int len = 0;
                 int totalDown = 0;
                 while ((len = is.read(b)) != -1) {
                     os.write(b, 0, len);
-                    totalDown+=len;
+                    totalDown++;
                     mProgressDialog.setProgress(totalDown);
                 }
                 os.flush();
                 mProgressDialog.dismiss();
+                mProgressDialog =null;
                 /**
                  * 下载完成的提示
                  */
