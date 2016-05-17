@@ -1,8 +1,8 @@
 package onionsss.it.onionsss.activity;
 
-import android.app.Activity;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
@@ -18,7 +18,7 @@ import onionsss.it.onionsss.R;
 import onionsss.it.onionsss.bean.User;
 import onionsss.it.onionsss.dao.UserDao;
 
-public class RegistActivity extends Activity {
+public class RegistActivity extends AppCompatActivity {
 
     @Bind(R.id.regist_edt_name)
     EditText regist_edt_name;

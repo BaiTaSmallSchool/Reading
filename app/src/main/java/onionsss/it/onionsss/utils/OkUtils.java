@@ -16,7 +16,7 @@ public class OkUtils {
          * 设置三秒连接延迟
          */
         OkHttpClient okHttpClient = new OkHttpClient.Builder().connectTimeout(3, TimeUnit.SECONDS).build();
-        // 2.请求体 
+        // 2.请求体
         Request request = new Request.Builder()
                 .get()//get请求方式
                 .url(url)//网址

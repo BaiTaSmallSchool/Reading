@@ -3,7 +3,6 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/Onionsss.iml" filepath="$PROJECT_DIR$/Onionsss.iml" />
-      <module fileurl="file://$PROJECT_DIR$/Reading.iml" filepath="$PROJECT_DIR$/Reading.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
       <module fileurl="file://$PROJECT_DIR$/cehua/cehua.iml" filepath="$PROJECT_DIR$/cehua/cehua.iml" />
     </modules>

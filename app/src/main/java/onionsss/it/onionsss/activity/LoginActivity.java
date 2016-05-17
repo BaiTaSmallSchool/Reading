@@ -1,9 +1,9 @@
 package onionsss.it.onionsss.activity;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
@@ -21,7 +21,7 @@ import onionsss.it.onionsss.R;
 import onionsss.it.onionsss.bean.User;
 import onionsss.it.onionsss.dao.UserDao;
 
-public class LoginActivity extends Activity {
+public class LoginActivity extends AppCompatActivity {
 
     @Bind(R.id.login_iv_head)
     ImageView login_iv_head;

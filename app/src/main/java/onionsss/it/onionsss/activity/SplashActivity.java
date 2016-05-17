@@ -11,6 +11,7 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.view.animation.AlphaAnimation;
@@ -38,7 +39,7 @@ import onionsss.it.onionsss.utils.PackageUtil;
  * Author  :  张琦
  * QQemial : 759308541@qq.com
  */
-public class SplashActivity extends Activity {
+public class SplashActivity extends AppCompatActivity {
     /**
      * 更新地址URL
      */

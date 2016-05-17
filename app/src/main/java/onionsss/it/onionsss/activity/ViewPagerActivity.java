@@ -1,11 +1,11 @@
 package onionsss.it.onionsss.activity;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -23,7 +23,7 @@ import onionsss.it.onionsss.R;
  * Author  :  张琦
  * QQemial : 759308541@qq.com
  */
-public class ViewPagerActivity extends Activity {
+public class ViewPagerActivity extends AppCompatActivity {
     @Bind(R.id.viewpager_vp)
     ViewPager mViewPager_vp;
     @Bind(R.id.viewpager_btn_start)
