@@ -1,3 +1,11 @@
 <resources>
     <string name="app_name">Onionsss</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="update">更新版本</string>
+    <string name="ok">确定</string>
+    <string name="no">取消</string>
+    <string name="please_input_name">请输入用户名</string>
+    <string name="username">用户名：</string>
 </resources>

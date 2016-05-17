@@ -42,7 +42,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="用户名："
+            android:text="@string/username"
             android:textAppearance="?android:attr/textAppearanceMedium" />
 
         <EditText
@@ -50,7 +50,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@null"
-            android:hint="请输入用户名"
+            android:hint="@string/please_input_name"
             android:singleLine="true"
             android:textColor="@color/black_0"
             android:textColorHighlight="@color/black"
