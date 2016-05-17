@@ -43,7 +43,7 @@ public class SplashActivity extends AppCompatActivity {
     /**
      * 更新地址URL
      */
-    private static final String UPDATE = "http://169.254.207.255:8080/update.json";
+    private static final String UPDATE = "http://180.171.45.124:8080/update.json";
     private static final String TAG = "SplashActivity";
     public static final int SPLASH_URL = 1;    //URL错误
     public static final int SPLASH_IO = 2;    //IO网络异常
