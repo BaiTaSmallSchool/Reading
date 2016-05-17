@@ -184,27 +184,37 @@ public class LoginActivity extends AppCompatActivity {
 
     }
 
-    private void LoginThread(String name, String password) {
-        String json = "{'name':'" + name + "','password':'" + password + "'}";
-        try {
-            Response response = OkUtils.postResponse(LOGINPATH, json);
-            switch (response.toString()) {
-                case "true":
-                    sp.edit().putString("name", name).putString("password", password).apply();
-                    handler.sendEmptyMessage(LOGIN_OK);
-                    break;
-                case "false":
-                    handler.sendEmptyMessage(LOGIN_NO);
-                    break;
-                default:
-                    handler.sendEmptyMessage(LOGIN_JSON);
-                    break;
-            }
+    private void LoginThread(final String name, final String password) {
+       new Thread(new Runnable() {
+           @Override
+           public void run() {
+               String json = "{'name':'" + name + "','password':'" + password + "'}";
+               try {
+                   Response response = OkUtils.postResponse(LOGINPATH, json);
+                   if (response.code() == 200) {
 
-        } catch (IOException e) {
-            handler.sendEmptyMessage(LOGIN_IO);
-            e.printStackTrace();
-        }
+                       switch (response.toString()) {
+                           case "true":
+                               sp.edit().putString("name", name).putString("password", password).apply();
+                               handler.sendEmptyMessage(LOGIN_OK);
+                               break;
+                           case "false":
+                               handler.sendEmptyMessage(LOGIN_NO);
+                               break;
+                           default:
+                               handler.sendEmptyMessage(LOGIN_JSON);
+                               break;
+                       }
+                   }else{
+                       handler.sendEmptyMessage(LOGIN_URL);
+                   }
+
+               } catch (IOException e) {
+                   handler.sendEmptyMessage(LOGIN_IO);
+                   e.printStackTrace();
+               }
+           }
+       }).start();
     }
 
     /**

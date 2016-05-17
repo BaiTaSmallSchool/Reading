@@ -39,7 +39,7 @@ public class RegistActivity extends AppCompatActivity {
     @Bind(R.id.regist_btn_regist)
     Button regist_btn_regist;
 
-   // private UserDao ud;
+    // private UserDao ud;
     private static final String REGISTPATH = "http://192.168.1.108:8080/onionsss/RegistServlet";
     private ProgressDialog mProgressDialog;
 
@@ -175,27 +175,32 @@ public class RegistActivity extends AppCompatActivity {
                 String json = "{'name':'" + name + "','password':'" + password + "'}";
                 try {
                     Response response = OkUtils.postResponse(REGISTPATH, json);
-                    //TODO  将服务端response返回值改为json类型
-                    switch (Integer.parseInt(response.toString())) {
-                        //服务端解析错误
-                        case -1:
-                            handler.sendEmptyMessage(REGIST_JSON);
-                            break;
-                        //用户已注册
-                        case 1:
-                            handler.sendEmptyMessage(REGIST_NO);
-                            break;
-                        //注册成功
-                        case 2:
-                            handler.sendEmptyMessage(REGIST_OK);
-                            break;
-                        //其他错误
-                        default:
-                            handler.sendEmptyMessage(REGIST_IO);
-                            break;
+                    if (response.code() == 200) {
+                        //TODO  将服务端response返回值改为json类型
+                        switch (Integer.parseInt(response.toString())) {
+                            //服务端解析错误
+                            case -1:
+                                handler.sendEmptyMessage(REGIST_JSON);
+                                break;
+                            //用户已注册
+                            case 1:
+                                handler.sendEmptyMessage(REGIST_NO);
+                                break;
+                            //注册成功
+                            case 2:
+                                handler.sendEmptyMessage(REGIST_OK);
+                                break;
+                            //其他错误
+                            default:
+                                handler.sendEmptyMessage(REGIST_IO);
+                                break;
+                        }
+                    } else {
+                        handler.sendEmptyMessage(REGIST_URL);
                     }
+
                 } catch (IOException e) {
-                    handler.sendEmptyMessage(REGIST_URL);
+                    handler.sendEmptyMessage(REGIST_IO);
                     e.printStackTrace();
                 }
             }
