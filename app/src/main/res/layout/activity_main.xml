@@ -11,73 +11,74 @@
         android:layout_height="0dp"
         android:layout_weight="1">
     </FrameLayout>
+
     <View
         android:layout_width="match_parent"
         android:layout_height="0.3dp"
-        android:layout_marginBottom="5dp"
-        android:background="@color/myhuise"></View>
+        android:background="@color/myhuise"
+        />
+
     <RadioGroup
         android:id="@+id/main_radiogroup"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="63dp"
         android:orientation="horizontal"
-        android:padding="3dp">
+        >
 
         <RadioButton
-
             android:id="@+id/main_rb_home"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:button="@null"
             android:drawableTop="@drawable/home_select"
-            android:gravity="center"
+            android:gravity="center_horizontal"
+            android:scaleX="0.7"
+            android:scaleY="0.6"
             android:text="首页"
-            android:scaleX="0.9"
-            android:scaleY="0.9"
             android:textColor="@drawable/home_text"
-            android:textSize="21sp"/>
+            android:textSize="18sp"/>
 
         <RadioButton
-            android:scaleX="0.9"
-            android:scaleY="0.9"
             android:id="@+id/main_rb_ramble"
-            android:drawableTop="@drawable/ramble_select"
-            android:textColor="@drawable/home_text"
-            android:gravity="center"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:button="@null"
+            android:drawableTop="@drawable/ramble_select"
+            android:gravity="center"
+            android:scaleX="0.7"
+            android:scaleY="0.6"
             android:text="逛逛"
-            android:textSize="21sp"/>
+            android:textColor="@drawable/home_text"
+            android:textSize="18sp"/>
 
         <RadioButton
-            android:scaleX="0.9"
-            android:scaleY="0.9"
             android:id="@+id/main_rb_dialog"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:button="@null"
-            android:textColor="@drawable/home_text"
             android:drawableTop="@drawable/dialog_select"
             android:gravity="center"
+            android:scaleX="0.7"
+            android:scaleY="0.6"
             android:text="消息"
-            android:textSize="21sp"/>
+            android:textColor="@drawable/home_text"
+            android:textSize="18sp"/>
 
         <RadioButton
-            android:scaleX="0.9"
-            android:scaleY="0.9"
             android:id="@+id/main_rb_my"
-            android:drawableTop="@drawable/my_select"
-            android:gravity="center"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textColor="@drawable/home_text"
             android:layout_weight="1"
             android:button="@null"
+            android:drawableTop="@drawable/my_select"
+            android:gravity="center"
+            android:scaleX="0.7"
+            android:scaleY="0.6"
             android:text="我的"
-            android:textSize="21sp"/>
+            android:textColor="@drawable/home_text"
+            android:textSize="18sp"/>
     </RadioGroup>
 </LinearLayout>

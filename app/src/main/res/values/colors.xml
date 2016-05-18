@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <color name="mychengse">#eb4f38</color>
-    <color name="myhuise">#a9b7b7</color>
+    <color name="myhuise">#55a9b7b7</color>
     <color name="colorPrimary">#3F51B5</color>
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FF4081</color>
