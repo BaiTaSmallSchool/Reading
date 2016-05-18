@@ -74,6 +74,7 @@ public class LoginActivity extends AppCompatActivity {
                     break;
                 case LOGIN_OK:
                     Toast.makeText(LoginActivity.this, "登录成功!", Toast.LENGTH_SHORT).show();
+                    save();
                     mProgressDialog.dismiss();
                     startActivity(new Intent(LoginActivity.this, MainActivity.class));
                     finish();
@@ -124,7 +125,7 @@ public class LoginActivity extends AppCompatActivity {
                 startActivity(new Intent(LoginActivity.this, RegistActivity.class));
                 break;
             case R.id.login_cb_remember:
-                save();
+                //save();
                 break;
         }
     }
@@ -137,7 +138,7 @@ public class LoginActivity extends AppCompatActivity {
         String password = login_edt_password.getText().toString().trim();
         if (!TextUtils.isEmpty(name) && !TextUtils.isEmpty(password)) {
             if (login_cb_remember.isChecked()) {
-                sp.edit().putBoolean("save", true).putString("name", name).putString("password", password).apply();
+                sp.edit().putBoolean("save", true).putString("name", name).putString("password", password).commit();
 //                关于commit和apply区别:(来源于百度)系统建议用apply   whatever
 //                1. apply没有返回值而commit返回boolean表明修改是否提交成功
 //                2. apply是将修改数据原子提交到内存, 而后异步真正提交到硬件磁盘, 而commit是同步的提交到硬件磁盘，因此，在多个并发的提交commit的时候，他们会等待正在处理的commit保存到磁盘后在操作，从而降低了效率。而apply只是原子的提交到内容，后面有调用apply的函数的将会直接覆盖前面的内存数据，这样从一定程度上提高了很多效率。
