@@ -182,7 +182,7 @@ public class RegistActivity extends AppCompatActivity {
                                 break;
                             //注册成功
                             case 2:
-                                handler.sendEmptyMessage(REGIST_OK);
+                                handler.sendEmptyMessageDelayed(REGIST_OK,1000);
                                 break;
                             //其他错误
                             default:

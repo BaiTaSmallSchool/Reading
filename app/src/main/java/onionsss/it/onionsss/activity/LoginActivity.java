@@ -24,8 +24,6 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import okhttp3.Response;
 import onionsss.it.onionsss.R;
-import onionsss.it.onionsss.bean.User;
-import onionsss.it.onionsss.dao.UserDao;
 import onionsss.it.onionsss.utils.OkUtils;
 
 public class LoginActivity extends AppCompatActivity {
@@ -197,10 +195,10 @@ public class LoginActivity extends AppCompatActivity {
                        switch (response.body().string()) {
                            case "true":
                                sp.edit().putString("name", name).putString("password", password).apply();
-                               handler.sendEmptyMessage(LOGIN_OK);
+                               handler.sendEmptyMessageDelayed(LOGIN_OK,1000);
                                break;
                            case "false":
-                               handler.sendEmptyMessage(LOGIN_NO);
+                               handler.sendEmptyMessageDelayed(LOGIN_NO,1000);
                                break;
                            default:
                                handler.sendEmptyMessage(LOGIN_JSON);
@@ -230,6 +228,7 @@ public class LoginActivity extends AppCompatActivity {
         if (TextUtils.isEmpty(name) || TextUtils.isEmpty(password)) {
             sp.edit().putBoolean("save", false).apply();
         }
+        sp.edit().putString("name", name).putString("password", password).apply();
         super.onDestroy();
     }
 }

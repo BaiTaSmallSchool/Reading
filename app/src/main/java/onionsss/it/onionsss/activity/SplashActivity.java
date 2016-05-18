@@ -190,10 +190,13 @@ public class SplashActivity extends AppCompatActivity {
      */
     public void download() {
         if (Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED)) {
+            if(mProgressDialog == null){
+                mProgressDialog = new ProgressDialog(this);
+                mProgressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
+                mProgressDialog.setCancelable(false);
+                mProgressDialog.show();
+            }
 
-            mProgressDialog = new ProgressDialog(this);
-            mProgressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
-            mProgressDialog.show();
 
             new Thread(new downAPK()).start();
         } else {
