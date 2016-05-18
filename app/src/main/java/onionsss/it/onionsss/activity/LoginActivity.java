@@ -25,6 +25,7 @@ import butterknife.OnClick;
 import okhttp3.Response;
 import onionsss.it.onionsss.R;
 import onionsss.it.onionsss.utils.OkUtils;
+import onionsss.it.onionsss.utils.constant.Constant;
 
 public class LoginActivity extends AppCompatActivity {
 
@@ -87,7 +88,7 @@ public class LoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         ButterKnife.bind(this);
-        sp = getSharedPreferences("config", MODE_PRIVATE);
+        sp = getSharedPreferences(Constant.SP_URI, MODE_PRIVATE);
         //ud = new UserDao(this);
         initView();
     }

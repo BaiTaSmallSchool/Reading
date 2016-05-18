@@ -24,7 +24,6 @@ import onionsss.it.onionsss.R;
 
 /**
  * Author  :  张琦
- * QQemial : 759308541@qq.com
  */
 public class ViewPagerActivity extends AppCompatActivity {
     private static final String TAG = "ViewPagerActivity";

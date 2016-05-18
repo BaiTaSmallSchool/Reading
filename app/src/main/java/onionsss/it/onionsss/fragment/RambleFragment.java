@@ -10,16 +10,16 @@ import android.view.ViewGroup;
 import onionsss.it.onionsss.R;
 
 
-public class SettingFragment extends Fragment {
+public class RambleFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_setting,null );
+        View view = inflater.inflate(R.layout.fragment_ramble,null);
         return view;
     }
 
     @Override
     public String toString() {
-        return "跳转到Setting";
+        return "跳转到Ramble";
     }
 }

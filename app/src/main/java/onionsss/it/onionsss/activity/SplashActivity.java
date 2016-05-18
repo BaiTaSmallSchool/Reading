@@ -37,7 +37,6 @@ import onionsss.it.onionsss.utils.PackageUtil;
 
 /**
  * Author  :  张琦
- * QQemial : 759308541@qq.com
  */
 public class SplashActivity extends AppCompatActivity {
     /**
@@ -296,9 +295,9 @@ public class SplashActivity extends AppCompatActivity {
     public void enterHome() {
         boolean guidePage = sp.getBoolean("guidePage", true);
         if (guidePage) {
-            startActivity(new Intent(SplashActivity.this, ViewPagerActivity.class));
+            startActivity(new Intent(SplashActivity.this, MainActivity.class));
         } else {
-            startActivity(new Intent(SplashActivity.this, ViewPagerActivity.class));
+            startActivity(new Intent(SplashActivity.this, MainActivity.class));
         }
         finish();
     }
