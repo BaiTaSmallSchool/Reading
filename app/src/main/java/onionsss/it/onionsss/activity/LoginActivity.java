@@ -54,7 +54,7 @@ public class LoginActivity extends AppCompatActivity {
 
     private SharedPreferences sp;
     //private UserDao ud;
-    private static final String LOGINPATH = "http://192.168.1.108:8080/onionsss/LoginServlet";
+    private static final String LOGINPATH = "http://169.254.163.120:8080/onionsss/LoginServlet";
 
     private ProgressDialog mProgressDialog;
 
@@ -193,7 +193,7 @@ public class LoginActivity extends AppCompatActivity {
                    Response response = OkUtils.postResponse(LOGINPATH, json);
                    if (response.code() == 200) {
 
-                       switch (response.toString()) {
+                       switch (response.body().string()) {
                            case "true":
                                sp.edit().putString("name", name).putString("password", password).apply();
                                handler.sendEmptyMessage(LOGIN_OK);
