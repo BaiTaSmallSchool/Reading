@@ -1,15 +1,11 @@
 package onionsss.it.onionsss.activity;
 
 import android.app.ProgressDialog;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v7.app.AppCompatActivity;
-import android.text.Editable;
 import android.text.TextUtils;
-import android.text.TextWatcher;
-import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -21,8 +17,6 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import okhttp3.Response;
 import onionsss.it.onionsss.R;
-import onionsss.it.onionsss.bean.User;
-import onionsss.it.onionsss.dao.UserDao;
 import onionsss.it.onionsss.utils.OkUtils;
 
 public class RegistActivity extends AppCompatActivity {
@@ -40,7 +34,7 @@ public class RegistActivity extends AppCompatActivity {
     Button regist_btn_regist;
 
     // private UserDao ud;
-    private static final String REGISTPATH = "http://192.168.1.108:8080/onionsss/RegistServlet";
+    private static final String REGISTPATH = "http://169.254.163.120:8080/onionsss/RegistServlet";
     private ProgressDialog mProgressDialog;
 
 
@@ -158,7 +152,7 @@ public class RegistActivity extends AppCompatActivity {
         if (!TextUtils.isEmpty(name) && !TextUtils.isEmpty(password)) {
             if (mProgressDialog == null) {
                 mProgressDialog = new ProgressDialog(this);
-                mProgressDialog.setMessage("登录中......");
+                mProgressDialog.setMessage("注册中......");
                 mProgressDialog.setCancelable(false);
             }
             mProgressDialog.show();
