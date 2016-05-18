@@ -22,4 +22,23 @@
         android:textSize="25sp"
         android:visibility="gone"
         android:text="开始体验"/>
+    <RelativeLayout
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="50dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+    <LinearLayout
+        android:id="@+id/viewpager_ll_shape"
+        android:orientation="horizontal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+    </LinearLayout>
+        <View
+            android:id="@+id/viewpager_v_red"
+            android:layout_width="10dp"
+            android:layout_height="10dp"
+            android:background="@drawable/viewpager_shape_red"/>
+    </RelativeLayout>
 </RelativeLayout>

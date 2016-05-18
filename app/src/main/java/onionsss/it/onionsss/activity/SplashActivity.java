@@ -56,21 +56,13 @@ public class SplashActivity extends AppCompatActivity {
         @Override
         public void handleMessage(Message msg) {
             switch (msg.what) {
-                case SPLASH_URL:
-                    Toast.makeText(SplashActivity.this, "地址错误", Toast.LENGTH_SHORT).show();
-                    enterHome();
-                    break;
-                case SPLASH_IO:
-                    Toast.makeText(SplashActivity.this, "网络错误", Toast.LENGTH_SHORT).show();
-                    enterHome();
-                    break;
-                case SPLASH_JSON:
-                    Toast.makeText(SplashActivity.this, "JSON错误", Toast.LENGTH_SHORT).show();
-                    enterHome();
-                    break;
                 case SPLASH_OK:
                     showDialog();
                     break;
+                case SPLASH_URL:
+                case SPLASH_IO:
+                case SPLASH_JSON:
+                    Toast.makeText(SplashActivity.this, "网络错误", Toast.LENGTH_SHORT).show();
                 case SPLASH_NO:
                     enterHome();
                     break;
@@ -78,8 +70,6 @@ public class SplashActivity extends AppCompatActivity {
             }
         }
     };
-
-
 
     /**
      * 版本信息
@@ -308,7 +298,7 @@ public class SplashActivity extends AppCompatActivity {
         if (guidePage) {
             startActivity(new Intent(SplashActivity.this, ViewPagerActivity.class));
         } else {
-            startActivity(new Intent(SplashActivity.this, LoginActivity.class));
+            startActivity(new Intent(SplashActivity.this, ViewPagerActivity.class));
         }
         finish();
     }

@@ -26,6 +26,7 @@ public class RegistActivity extends AppCompatActivity {
     private static final int REGIST_JSON = 3;
     private static final int REGIST_OK = 4;
     private static final int REGIST_NO = 5;
+
     @Bind(R.id.regist_edt_name)
     EditText regist_edt_name;
     @Bind(R.id.regist_edt_password)
@@ -37,19 +38,13 @@ public class RegistActivity extends AppCompatActivity {
     private static final String REGISTPATH = "http://169.254.163.120:8080/onionsss/RegistServlet";
     private ProgressDialog mProgressDialog;
 
-
     private Handler handler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
             switch (msg.what) {
-                case REGIST_URL:
-                    Toast.makeText(RegistActivity.this, "地址错误", Toast.LENGTH_SHORT).show();
-                    break;
-                case REGIST_IO:
-                    Toast.makeText(RegistActivity.this, "网络错误", Toast.LENGTH_SHORT).show();
-                    break;
-                case REGIST_JSON:
-                    Toast.makeText(RegistActivity.this, "JSON错误", Toast.LENGTH_SHORT).show();
+
+                case REGIST_NO:
+                    Toast.makeText(RegistActivity.this, "对不起,该用户名已经被注册!", Toast.LENGTH_SHORT).show();
                     regist_edt_name.setText("");
                     regist_edt_password.setText("");
                     break;
@@ -58,8 +53,12 @@ public class RegistActivity extends AppCompatActivity {
                     mProgressDialog.dismiss();
                     finish();
                     break;
-                case REGIST_NO:
-                    Toast.makeText(RegistActivity.this, "对不起,该用户名已经被注册!", Toast.LENGTH_SHORT).show();
+                case REGIST_URL:
+                case REGIST_IO:
+                    Toast.makeText(RegistActivity.this, "网络错误", Toast.LENGTH_SHORT).show();
+                    break;
+                case REGIST_JSON:
+                    Toast.makeText(RegistActivity.this, "JSON错误", Toast.LENGTH_SHORT).show();
                     regist_edt_name.setText("");
                     regist_edt_password.setText("");
                     break;

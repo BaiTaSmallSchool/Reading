@@ -33,6 +33,7 @@ public class LoginActivity extends AppCompatActivity {
     private static final int LOGIN_JSON = 3;
     private static final int LOGIN_OK = 4;
     private static final int LOGIN_NO = 5;
+
     @Bind(R.id.login_iv_head)
     ImageView login_iv_head;
     @Bind(R.id.login_edt_name)
@@ -53,23 +54,12 @@ public class LoginActivity extends AppCompatActivity {
     private SharedPreferences sp;
     //private UserDao ud;
     private static final String LOGINPATH = "http://169.254.163.120:8080/onionsss/LoginServlet";
-
     private ProgressDialog mProgressDialog;
-
 
     private Handler handler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
             switch (msg.what) {
-                case LOGIN_URL:
-                    Toast.makeText(LoginActivity.this, "地址错误", Toast.LENGTH_SHORT).show();
-                    break;
-                case LOGIN_IO:
-                    Toast.makeText(LoginActivity.this, "网络错误", Toast.LENGTH_SHORT).show();
-                    break;
-                case LOGIN_JSON:
-                    Toast.makeText(LoginActivity.this, "JSON错误", Toast.LENGTH_SHORT).show();
-                    break;
                 case LOGIN_OK:
                     Toast.makeText(LoginActivity.this, "登录成功!", Toast.LENGTH_SHORT).show();
                     save();
@@ -82,7 +72,11 @@ public class LoginActivity extends AppCompatActivity {
                     login_edt_password.setText("");
                     login_edt_name.setText("");
                     break;
-
+                case LOGIN_URL:
+                case LOGIN_IO:
+                case LOGIN_JSON:
+                    Toast.makeText(LoginActivity.this, "网络错误", Toast.LENGTH_SHORT).show();
+                    break;
             }
             mProgressDialog.dismiss();
         }
@@ -165,7 +159,6 @@ public class LoginActivity extends AppCompatActivity {
             }
             mProgressDialog.show();
             LoginThread(name, password);
-
 
 //            if (user != null && name.equals(user.getName()) && password.equals(user.getPassword())) {
 //                Toast.makeText(LoginActivity.this, "登录成功!", Toast.LENGTH_SHORT).show();
