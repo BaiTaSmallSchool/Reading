@@ -1,19 +1,17 @@
 package onionsss.it.onionsss.activity;
 
 import android.app.ProgressDialog;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v7.app.AppCompatActivity;
-import android.text.Editable;
 import android.text.TextUtils;
-import android.text.TextWatcher;
 import android.util.Log;
-import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
+
+import org.json.JSONObject;
 
 import java.io.IOException;
 
@@ -22,8 +20,6 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import okhttp3.Response;
 import onionsss.it.onionsss.R;
-import onionsss.it.onionsss.bean.User;
-import onionsss.it.onionsss.dao.UserDao;
 import onionsss.it.onionsss.utils.OkUtils;
 
 public class RegistActivity extends AppCompatActivity {
@@ -40,8 +36,7 @@ public class RegistActivity extends AppCompatActivity {
     @Bind(R.id.regist_btn_regist)
     Button regist_btn_regist;
 
-    // private UserDao ud;
-    private static final String REGISTPATH = "http://169.254.163.120:8080/onionsss/RegistServlet";
+    private static final String REGISTPATH = "http://169.254.163.120:8080/onionsss/OnionsssServlet";
     private ProgressDialog mProgressDialog;
 
 
@@ -81,8 +76,6 @@ public class RegistActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_regist);
         ButterKnife.bind(this);
-        //ud = new UserDao(this);
-        //initListener();
     }
 
     //用户名重复校验暂时放到提交的时候,后期修改
@@ -169,39 +162,48 @@ public class RegistActivity extends AppCompatActivity {
         }
     }
 
+
+
     private void RegistThread(final String name, final String password) {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                String json = "{'name':'" + name + "','password':'" + password + "'}";
+                String json = "{'requestCode':'3','name':'" + name + "','password':'" + password + "'}";
                 try {
                     Response response = OkUtils.postResponse(REGISTPATH, json);
                     if (response.code() == 200) {
-                        //TODO  将服务端response返回值改为json类型
-
-                        switch (Integer.parseInt(response.body().string())) {
-                            //服务端解析错误
-                            case -1:
-                                handler.sendEmptyMessage(REGIST_JSON);
-                                break;
-                            //用户已注册
-                            case 1:
-                                handler.sendEmptyMessage(REGIST_NO);
-                                break;
-                            //注册成功
-                            case 2:
-                                handler.sendEmptyMessage(REGIST_OK);
-                                break;
-                            //其他错误
-                            default:
-                                handler.sendEmptyMessage(REGIST_IO);
-                                break;
+                        String string = response.body().string();
+                        JSONObject jsonObject = new JSONObject(string);
+                        if (jsonObject.getString("requestCode").equals("3")) {
+                            switch (jsonObject.getString("result")) {
+                                //服务端解析错误
+                                case "EMPTY":
+                                    handler.sendEmptyMessage(REGIST_JSON);
+                                    break;
+                                //用户已注册
+                                case "false":
+                                    handler.sendEmptyMessage(REGIST_NO);
+                                    break;
+                                //注册成功
+                                case "true":
+                                    handler.sendEmptyMessageDelayed(REGIST_OK, 800);
+                                    break;
+                                //其他错误
+                                default:
+                                    handler.sendEmptyMessage(REGIST_IO);
+                                    break;
+                            }
+                        } else {
+                            handler.sendEmptyMessage(REGIST_JSON);
                         }
                     } else {
                         handler.sendEmptyMessage(REGIST_URL);
                     }
 
                 } catch (IOException e) {
+                    handler.sendEmptyMessage(REGIST_IO);
+                    e.printStackTrace();
+                } catch (Exception e) {
                     handler.sendEmptyMessage(REGIST_IO);
                     e.printStackTrace();
                 }

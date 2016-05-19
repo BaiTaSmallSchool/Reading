@@ -17,6 +17,8 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import org.json.JSONObject;
+
 import java.io.IOException;
 
 import butterknife.Bind;
@@ -24,8 +26,6 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import okhttp3.Response;
 import onionsss.it.onionsss.R;
-import onionsss.it.onionsss.bean.User;
-import onionsss.it.onionsss.dao.UserDao;
 import onionsss.it.onionsss.utils.OkUtils;
 
 public class LoginActivity extends AppCompatActivity {
@@ -53,8 +53,7 @@ public class LoginActivity extends AppCompatActivity {
     LinearLayout login_layout;
 
     private SharedPreferences sp;
-    //private UserDao ud;
-    private static final String LOGINPATH = "http://169.254.163.120:8080/onionsss/LoginServlet";
+    private static final String LOGINPATH = "http://169.254.163.120:8080/onionsss/OnionsssServlet";
 
     private ProgressDialog mProgressDialog;
 
@@ -96,7 +95,6 @@ public class LoginActivity extends AppCompatActivity {
         setContentView(R.layout.activity_login);
         ButterKnife.bind(this);
         sp = getSharedPreferences("config", MODE_PRIVATE);
-        //ud = new UserDao(this);
         initView();
     }
 
@@ -125,7 +123,7 @@ public class LoginActivity extends AppCompatActivity {
                 startActivity(new Intent(LoginActivity.this, RegistActivity.class));
                 break;
             case R.id.login_cb_remember:
-                //save();
+                save();
                 break;
         }
     }
@@ -138,12 +136,7 @@ public class LoginActivity extends AppCompatActivity {
         String password = login_edt_password.getText().toString().trim();
         if (!TextUtils.isEmpty(name) && !TextUtils.isEmpty(password)) {
             if (login_cb_remember.isChecked()) {
-                sp.edit().putBoolean("save", true).putString("name", name).putString("password", password).commit();
-//                关于commit和apply区别:(来源于百度)系统建议用apply   whatever
-//                1. apply没有返回值而commit返回boolean表明修改是否提交成功
-//                2. apply是将修改数据原子提交到内存, 而后异步真正提交到硬件磁盘, 而commit是同步的提交到硬件磁盘，因此，在多个并发的提交commit的时候，他们会等待正在处理的commit保存到磁盘后在操作，从而降低了效率。而apply只是原子的提交到内容，后面有调用apply的函数的将会直接覆盖前面的内存数据，这样从一定程度上提高了很多效率。
-//                3. apply方法不会提示任何失败的提示。
-//                由于在一个进程中，sharedPreference是单实例，一般不会出现并发冲突，如果对提交的结果不关心的话，建议使用apply，当然需要确保提交成功且有后续操作的话，还是需要用commit的。
+                sp.edit().putBoolean("save", true).putString("name", name).putString("password", password).apply();
             } else {
                 sp.edit().putBoolean("save", false).remove("name").remove("password").apply();
             }
@@ -168,54 +161,58 @@ public class LoginActivity extends AppCompatActivity {
             mProgressDialog.show();
             LoginThread(name, password);
 
-
-//            if (user != null && name.equals(user.getName()) && password.equals(user.getPassword())) {
-//                Toast.makeText(LoginActivity.this, "登录成功!", Toast.LENGTH_SHORT).show();
-//                sp.edit().putString("name", name).putString("password", password).apply();
-//                startActivity(new Intent(LoginActivity.this, MainActivity.class));
-//                finish();
-//            } else {
-//                Toast.makeText(LoginActivity.this, "帐号或者密码输入错误!", Toast.LENGTH_SHORT).show();
-//                login_edt_password.setText("");
-//                login_edt_name.setText("");
-//            }
         } else {
             Toast.makeText(LoginActivity.this, "请输入帐号密码!", Toast.LENGTH_SHORT).show();
         }
 
     }
 
+
+
+    /**
+     * 登录子线程
+     */
     private void LoginThread(final String name, final String password) {
-       new Thread(new Runnable() {
-           @Override
-           public void run() {
-               String json = "{'name':'" + name + "','password':'" + password + "'}";
-               try {
-                   Response response = OkUtils.postResponse(LOGINPATH, json);
-                   if (response.code() == 200) {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                //TODO 添加cookie
 
-                       switch (response.body().string()) {
-                           case "true":
-                               sp.edit().putString("name", name).putString("password", password).apply();
-                               handler.sendEmptyMessage(LOGIN_OK);
-                               break;
-                           case "false":
-                               handler.sendEmptyMessage(LOGIN_NO);
-                               break;
-                           default:
-                               handler.sendEmptyMessage(LOGIN_JSON);
-                               break;
-                       }
-                   }else{
-                       handler.sendEmptyMessage(LOGIN_URL);
-                   }
+                String json = "{'requestCode':'2','name':'" + name + "','password':'" + password + "'}";
+                try {
+                    Response response = OkUtils.postResponse(LOGINPATH, json);
+                    if (response.code() == 200) {
+                        JSONObject jsonObject = new JSONObject(response.body().string());
+                        if (jsonObject.getString("requestCode").equals("2") && jsonObject.getString("responseCode").equals("1")) {
 
-               } catch (IOException e) {
-                   handler.sendEmptyMessage(LOGIN_IO);
-                   e.printStackTrace();
-               }
-           }
-       }).start();
+                            switch (jsonObject.getString("result")) {
+                                case "true":
+                                    sp.edit().putString("name", name).putString("password", password).apply();
+                                    handler.sendEmptyMessageDelayed(LOGIN_OK,1000);
+                                    break;
+                                case "false":
+                                    handler.sendEmptyMessage(LOGIN_NO);
+                                    break;
+                                default:
+                                    handler.sendEmptyMessage(LOGIN_JSON);
+                                    break;
+                            }
+                        } else {
+                            handler.sendEmptyMessage(LOGIN_URL);
+                        }
+                    } else {
+                        handler.sendEmptyMessage(LOGIN_JSON);
+                    }
+
+                } catch (IOException e) {
+                    handler.sendEmptyMessage(LOGIN_IO);
+                    e.printStackTrace();
+                } catch (Exception e) {
+                    handler.sendEmptyMessage(LOGIN_IO);
+                    e.printStackTrace();
+                }
+            }
+        }).start();
     }
 
     /**

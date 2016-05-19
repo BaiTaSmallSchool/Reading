@@ -1,5 +1,6 @@
 package onionsss.it.onionsss.activity;
 
+import android.Manifest;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
@@ -17,6 +18,13 @@ import android.view.View;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
 import android.widget.Toast;
+
+import com.karumi.dexter.Dexter;
+import com.karumi.dexter.PermissionToken;
+import com.karumi.dexter.listener.PermissionDeniedResponse;
+import com.karumi.dexter.listener.PermissionGrantedResponse;
+import com.karumi.dexter.listener.PermissionRequest;
+import com.karumi.dexter.listener.single.PermissionListener;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -51,6 +59,7 @@ public class SplashActivity extends AppCompatActivity {
     public static final int SPLASH_OK = 5;    //需要更新
     public static final int SPLASH_NO = 6;    //不需要更新
     public static final int SPLASH_INSTALL = 7;    //不需要更新
+    private static final int SPLASH_TOAST = 8;
 
     private Handler handler = new Handler() {
         @Override
@@ -74,11 +83,13 @@ public class SplashActivity extends AppCompatActivity {
                 case SPLASH_NO:
                     enterHome();
                     break;
+                case SPLASH_TOAST:
+                    Toast.makeText(SplashActivity.this, "" + msg.obj, Toast.LENGTH_SHORT).show();
+                    break;
 
             }
         }
     };
-
 
 
     /**
@@ -92,6 +103,8 @@ public class SplashActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         sp = getSharedPreferences("config", MODE_PRIVATE);
+        //Android M 运行时权限
+        Dexter.initialize(this);
         /**
          * 数据库的测试
          */
@@ -113,10 +126,12 @@ public class SplashActivity extends AppCompatActivity {
             @Override
             public void onAnimationStart(Animation animation) {
             }
+
             @Override
             public void onAnimationEnd(Animation animation) {
                 checkVersion();
             }
+
             @Override
             public void onAnimationRepeat(Animation animation) {
             }
@@ -189,19 +204,47 @@ public class SplashActivity extends AppCompatActivity {
      * 用户点击了确定 开始下载新版本
      */
     public void download() {
-        if (Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED)) {
 
-            mProgressDialog = new ProgressDialog(this);
-            mProgressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
-            mProgressDialog.show();
+        Dexter.checkPermission(new PermissionListener() {
 
-            new Thread(new downAPK()).start();
-        } else {
-            /**
-             * 没有挂载好
-             */
-            Toast.makeText(this, "没有SD卡,无法下载!", Toast.LENGTH_SHORT).show();
-        }
+            //获取到权限
+            @Override
+            public void onPermissionGranted(PermissionGrantedResponse response) {
+                if (Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED)) {
+
+                    mProgressDialog = new ProgressDialog(SplashActivity.this);
+                    mProgressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
+                    mProgressDialog.show();
+
+                    new Thread(new downAPK()).start();
+                } else {
+                    /**
+                     * 没有挂载好
+                     */
+                    handler.obtainMessage(SPLASH_TOAST, "没有SD卡,无法下载!").sendToTarget();
+                    enterHome();
+                    finish();
+                }
+            }
+
+            //用户拒绝权限
+            @Override
+            public void onPermissionDenied(PermissionDeniedResponse response) {
+                handler.obtainMessage(SPLASH_TOAST , "无法获取SD卡读取权限,跳过更新").sendToTarget();
+                enterHome();
+                finish();
+            }
+
+            //拒绝权限并勾选记住选择,或权限申请被拦截
+            @Override
+            public void onPermissionRationaleShouldBeShown(PermissionRequest permission, PermissionToken token) {
+                handler.obtainMessage(SPLASH_TOAST , "无法获取SD卡读取权限,请到权限设置中授予权限").sendToTarget();
+                enterHome();
+                finish();
+            }
+        }, Manifest.permission.WRITE_EXTERNAL_STORAGE);
+
+
     }
 
     /**
@@ -215,31 +258,31 @@ public class SplashActivity extends AppCompatActivity {
             OutputStream os = null;
             try {
                 Response response = OkUtils.getResponse(mUj.getUrl());
-                mProgressDialog.setMax((int) response.body().contentLength()/1024);
+                mProgressDialog.setMax((int) response.body().contentLength() / 1024);
                 is = response.body().byteStream();
                 File rootFile = Environment
                         .getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS);
-                File file = new File(rootFile, "onionsss-v"+PackageUtil
-                        .getVersionCode(SplashActivity .this)+".apk");
+                File file = new File(rootFile, "onionsss-v" + PackageUtil
+                        .getVersionCode(SplashActivity.this) + ".apk");
                 os = new FileOutputStream(file);
                 byte[] b = new byte[1024];
                 int len = 0;
                 int totalDown = 0;
-                while ((len = is.read(b)) != -1) {
+                while((len = is.read(b)) != -1) {
                     os.write(b, 0, len);
                     totalDown++;
                     mProgressDialog.setProgress(totalDown);
                 }
                 os.flush();
                 mProgressDialog.dismiss();
-                mProgressDialog =null;
+                mProgressDialog = null;
                 /**
                  * 下载完成的提示
                  */
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        Toast.makeText(SplashActivity.this,"下载完成,等待安装!", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(SplashActivity.this, "下载完成,等待安装!", Toast.LENGTH_SHORT).show();
                     }
                 });
                 installApk(file);
@@ -265,16 +308,17 @@ public class SplashActivity extends AppCompatActivity {
         intent.setDataAndType(data, "application/vnd.android.package-archive");
         startActivityForResult(intent, SPLASH_INSTALL);
     }
+
     /**
      * 接收系统安装页面的反馈
      */
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if(requestCode == SPLASH_INSTALL){
-            switch(resultCode){
+        if (requestCode == SPLASH_INSTALL) {
+            switch (resultCode) {
                 case Activity.RESULT_OK:
-                break;
+                    break;
                 case Activity.RESULT_CANCELED:
                     enterHome();
                     break;
@@ -284,6 +328,7 @@ public class SplashActivity extends AppCompatActivity {
 
     /**
      * 关流的操作
+     *
      * @param close
      */
     private void Closed(Closeable close) {
@@ -309,4 +354,6 @@ public class SplashActivity extends AppCompatActivity {
         }
         finish();
     }
+
+
 }
