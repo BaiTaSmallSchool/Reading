@@ -5,6 +5,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.util.Log;
 import android.view.GestureDetector;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
@@ -61,6 +62,11 @@ public class MainActivity extends FragmentActivity implements RadioGroup.OnCheck
      * @param savedInstanceState
      */
     private GestureDetector gesture;
+    /**
+     * 判断切换Fragment是否是手势动作造成的
+     * 如果是则只执行一次
+     */
+    public static boolean isGesture = false;
     public static final int HOME = 0;
     public static final int RAMBLE = 1;
     public static final int CHAT = 2;
@@ -79,46 +85,52 @@ public class MainActivity extends FragmentActivity implements RadioGroup.OnCheck
 
     /**
      * 加入简单的手势动作
+     * TODO  手势动作有BUG  会执行两次
      */
     private void gesture() {
         gesture = new GestureDetector(this, new GestureDetector.SimpleOnGestureListener() {
             @Override
             public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
                 if (e2.getRawX() - e1.getRawX() > 200 && Math.abs(e2.getRawY() - e1.getRawY()) < 200) {
+                    isGesture = true;
                     switch (lastIndex) {
                         case HOME:
                             break;
                         case RAMBLE:
-                            changeFragment(list.get(RAMBLE - 1), RAMBLE - 1);
+                            changeFragment(list.get(HOME), HOME);
                             setIconCheck();
                             break;
                         case CHAT:
-                            changeFragment(list.get(CHAT - 1), CHAT - 1);
+                            changeFragment(list.get(RAMBLE), RAMBLE);
                             setIconCheck();
                             break;
                         case MY:
-                            changeFragment(list.get(MY - 1), MY - 1);
+                            changeFragment(list.get(CHAT), CHAT);
                             setIconCheck();
                             break;
                     }
+                    isGesture = false;
                 }
                 if (e1.getRawX() - e2.getRawX() > 200 && Math.abs(e1.getRawY() - e2.getRawY()) < 200) {
+                    isGesture = true;
                     switch (lastIndex) {
                         case HOME:
-                            changeFragment(list.get(HOME + 1), HOME + 1);
+                            changeFragment(list.get(RAMBLE), RAMBLE);
+                            Log.d(TAG, "onFling: ");
                             setIconCheck();
                             break;
                         case RAMBLE:
-                            changeFragment(list.get(RAMBLE + 1), RAMBLE + 1);
+                            changeFragment(list.get(CHAT), CHAT);
                             setIconCheck();
                             break;
                         case CHAT:
-                            changeFragment(list.get(CHAT + 1), CHAT + 1);
+                            changeFragment(list.get(MY), MY);
                             setIconCheck();
                             break;
                         case MY:
                             break;
                     }
+                    isGesture = false;
                 }
                 return super.onFling(e1, e2, velocityX, velocityY);
             }
@@ -179,6 +191,9 @@ public class MainActivity extends FragmentActivity implements RadioGroup.OnCheck
                 .commit();
     }
 
+    /**
+     * 默认界面
+     */
     private void setIconCheck() {
         switch (lastIndex) {
             case 0:
@@ -205,6 +220,9 @@ public class MainActivity extends FragmentActivity implements RadioGroup.OnCheck
      */
     @Override
     public void onCheckedChanged(RadioGroup group, int checkedId) {
+        if(isGesture){
+            return;
+        }
         switch (checkedId) {
             case R.id.main_rb_home:
                 changeFragment(list.get(0), 0);
@@ -228,6 +246,7 @@ public class MainActivity extends FragmentActivity implements RadioGroup.OnCheck
      * @param flag     原来标识在list集合角标
      */
     public void changeFragment(Fragment fragment, int flag) {
+        Log.d(TAG, "onFling:111 ");
         /*
         记录角标
          */
