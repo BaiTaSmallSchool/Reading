@@ -17,7 +17,7 @@ public class SettingFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_setting,null );
         return view;
     }
-
+    //TODO
     @Override
     public String toString() {
         return "跳转到Setting";
