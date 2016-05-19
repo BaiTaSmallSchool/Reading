@@ -10,16 +10,17 @@ import android.view.ViewGroup;
 import onionsss.it.onionsss.R;
 
 
-public class SettingFragment extends Fragment {
+public class HomeFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_setting,null );
+        View view = inflater.inflate(R.layout.fragment_home,null);
         return view;
     }
-    //TODO
+
+
     @Override
     public String toString() {
-        return "跳转到Setting";
+        return "跳转到Home";
     }
 }

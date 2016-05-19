@@ -3,11 +3,12 @@
              android:layout_width="match_parent"
              android:layout_height="match_parent"
              tools:context=".fragment.SettingFragment">
+
     <TextView
         android:gravity="center"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:textSize="50sp"
-        android:text="setting"/>
+        android:text="home"/>
 
 </FrameLayout>

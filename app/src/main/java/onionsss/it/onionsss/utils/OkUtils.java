@@ -15,7 +15,6 @@ import okhttp3.Response;
 public class OkUtils {
     private static final MediaType JSON
             = MediaType.parse("application/json; charset=utf-8");
-
     public static Response getResponse(String url) throws IOException {
         /**
          * 设置三秒连接延迟
@@ -36,6 +35,13 @@ public class OkUtils {
         return response;
     }
 
+    /**
+     * 网络请求验证帐号密码
+     * @param url
+     * @param json
+     * @return
+     * @throws IOException
+     */
     public static Response postResponse(String url, String json) throws IOException {
         /**
          * 设置三秒连接延迟
