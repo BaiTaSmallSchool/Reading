@@ -13,6 +13,7 @@ import android.view.ViewTreeObserver;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -106,31 +107,34 @@ public class ViewPagerActivity extends AppCompatActivity {
                 container.removeView((View) object);
             }
         });
-//        mViewPager_vp.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
-//            @Override
-//            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-//                if(position == list.size()-1){
-//                    mViewpager_btn_start.setVisibility(View.VISIBLE);
-//                }else{
-//                    mViewpager_btn_start.setVisibility(View.GONE);
-//                }
-//            }
-//
-//            @Override
-//            public void onPageSelected(int position) {
-//
-//            }
-//
-//            @Override
-//            public void onPageScrollStateChanged(int state) {
-//
-//            }
-//        });
+        mViewPager_vp.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+                if(position == list.size()-1){
+                    mViewpager_btn_start.setVisibility(View.VISIBLE);
+                }else{
+                    mViewpager_btn_start.setVisibility(View.GONE);
+                }
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+
+            }
+        });
 
         mViewPager_vp.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-
+                int width = (int) (mOvalRange * positionOffset + (position * mOvalRange));
+                RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) viewpager_v_red.getLayoutParams();
+                params.leftMargin = width;
+                viewpager_v_red.setLayoutParams(params);
             }
 
             @Override

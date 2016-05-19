@@ -5,5 +5,4 @@
     <string name="ok">确定</string>
     <string name="no">取消</string>
     <string name="please_input_name">请输入用户名</string>
-    <string name="username">用户名：</string>
 </resources>

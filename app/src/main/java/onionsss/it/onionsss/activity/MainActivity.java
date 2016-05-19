@@ -14,6 +14,8 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Toast;
 
+import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -22,6 +24,7 @@ import butterknife.ButterKnife;
 import onionsss.it.onionsss.R;
 import onionsss.it.onionsss.fragment.ChatFragment;
 import onionsss.it.onionsss.fragment.HomeFragment;
+import onionsss.it.onionsss.fragment.LeftFragment;
 import onionsss.it.onionsss.fragment.RambleFragment;
 import onionsss.it.onionsss.fragment.SettingFragment;
 import onionsss.it.onionsss.utils.SpUtil;
@@ -76,15 +79,34 @@ public class MainActivity extends FragmentActivity implements RadioGroup.OnCheck
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        slidingMenu();
+
+
         ButterKnife.bind(this);
         initData();
         initListener();
         initView();
-        gesture();
+//        gesture();
     }
 
     /**
-     * 加入简单的手势动作
+     * SlidingMenu绑定
+     */
+    private void slidingMenu() {
+        SlidingMenu leftMenu = new SlidingMenu(this);
+        leftMenu.setMode(SlidingMenu.LEFT);
+        leftMenu.setTouchModeAbove(SlidingMenu.TOUCHMODE_FULLSCREEN);
+        leftMenu.setShadowWidthRes(R.dimen.shadow_width);
+        leftMenu.setShadowDrawable(R.drawable.shadow);
+        leftMenu.setBehindOffsetRes(R.dimen.slidingmenu_offset);
+        leftMenu.setFadeDegree(0.35f);
+        leftMenu.setFadeEnabled(true);
+        leftMenu.attachToActivity(this, SlidingMenu.SLIDING_CONTENT);
+        leftMenu.setMenu(R.layout.left_menu);
+    }
+
+    /**
+     * 加入简单的手势动作   不做了
      * TODO  手势动作有BUG  会执行两次
      */
     private void gesture() {
@@ -153,6 +175,7 @@ public class MainActivity extends FragmentActivity implements RadioGroup.OnCheck
         list.add(new RambleFragment());
         list.add(new ChatFragment());
         list.add(new SettingFragment());
+        list.add(new LeftFragment());
     }
 
     private void initListener() {
@@ -183,6 +206,7 @@ public class MainActivity extends FragmentActivity implements RadioGroup.OnCheck
                 .add(R.id.main_content, list.get(1), "ramble")
                 .add(R.id.main_content, list.get(2), "chat")
                 .add(R.id.main_content, list.get(3), "setting")
+                .add(R.id.left_menu,list.get(4),"left")
                 .hide(list.get(0))
                 .hide(list.get(1))
                 .hide(list.get(2))
@@ -263,11 +287,11 @@ public class MainActivity extends FragmentActivity implements RadioGroup.OnCheck
         Toast.makeText(this, "切换到" + fragment.toString(), Toast.LENGTH_SHORT).show();
     }
 
-    @Override
-    public boolean onTouchEvent(MotionEvent event) {
-        gesture.onTouchEvent(event);
-        return super.onTouchEvent(event);
-    }
+//    @Override
+//    public boolean onTouchEvent(MotionEvent event) {
+//        gesture.onTouchEvent(event);
+//        return super.onTouchEvent(event);
+//    }
 
     /**
      * 用户需要点击两次退出程序

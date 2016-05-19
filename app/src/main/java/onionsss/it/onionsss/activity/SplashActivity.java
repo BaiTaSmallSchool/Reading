@@ -45,7 +45,6 @@ import onionsss.it.onionsss.utils.PackageUtil;
 
 /**
  * Author  :  张琦
- * QQemial : 759308541@qq.com
  */
 public class SplashActivity extends AppCompatActivity {
     /**
@@ -60,37 +59,24 @@ public class SplashActivity extends AppCompatActivity {
     public static final int SPLASH_NO = 6;    //不需要更新
     public static final int SPLASH_INSTALL = 7;    //不需要更新
     private static final int SPLASH_TOAST = 8;
-
     private Handler handler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
             switch (msg.what) {
-                case SPLASH_URL:
-                    Toast.makeText(SplashActivity.this, "地址错误", Toast.LENGTH_SHORT).show();
-                    enterHome();
-                    break;
-                case SPLASH_IO:
-                    Toast.makeText(SplashActivity.this, "网络错误", Toast.LENGTH_SHORT).show();
-                    enterHome();
-                    break;
-                case SPLASH_JSON:
-                    Toast.makeText(SplashActivity.this, "JSON错误", Toast.LENGTH_SHORT).show();
-                    enterHome();
-                    break;
                 case SPLASH_OK:
                     showDialog();
                     break;
+                case SPLASH_URL:
+                case SPLASH_IO:
+                case SPLASH_JSON:
+                    Toast.makeText(SplashActivity.this, "网络错误", Toast.LENGTH_SHORT).show();
                 case SPLASH_NO:
                     enterHome();
-                    break;
-                case SPLASH_TOAST:
-                    Toast.makeText(SplashActivity.this, "" + msg.obj, Toast.LENGTH_SHORT).show();
                     break;
 
             }
         }
     };
-
 
     /**
      * 版本信息
@@ -126,12 +112,10 @@ public class SplashActivity extends AppCompatActivity {
             @Override
             public void onAnimationStart(Animation animation) {
             }
-
             @Override
             public void onAnimationEnd(Animation animation) {
                 checkVersion();
             }
-
             @Override
             public void onAnimationRepeat(Animation animation) {
             }
@@ -258,31 +242,31 @@ public class SplashActivity extends AppCompatActivity {
             OutputStream os = null;
             try {
                 Response response = OkUtils.getResponse(mUj.getUrl());
-                mProgressDialog.setMax((int) response.body().contentLength() / 1024);
+                mProgressDialog.setMax((int) response.body().contentLength()/1024);
                 is = response.body().byteStream();
                 File rootFile = Environment
                         .getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS);
-                File file = new File(rootFile, "onionsss-v" + PackageUtil
-                        .getVersionCode(SplashActivity.this) + ".apk");
+                File file = new File(rootFile, "onionsss-v"+PackageUtil
+                        .getVersionCode(SplashActivity .this)+".apk");
                 os = new FileOutputStream(file);
                 byte[] b = new byte[1024];
                 int len = 0;
                 int totalDown = 0;
-                while((len = is.read(b)) != -1) {
+                while ((len = is.read(b)) != -1) {
                     os.write(b, 0, len);
                     totalDown++;
                     mProgressDialog.setProgress(totalDown);
                 }
                 os.flush();
                 mProgressDialog.dismiss();
-                mProgressDialog = null;
+                mProgressDialog =null;
                 /**
                  * 下载完成的提示
                  */
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        Toast.makeText(SplashActivity.this, "下载完成,等待安装!", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(SplashActivity.this,"下载完成,等待安装!", Toast.LENGTH_SHORT).show();
                     }
                 });
                 installApk(file);
@@ -308,17 +292,16 @@ public class SplashActivity extends AppCompatActivity {
         intent.setDataAndType(data, "application/vnd.android.package-archive");
         startActivityForResult(intent, SPLASH_INSTALL);
     }
-
     /**
      * 接收系统安装页面的反馈
      */
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == SPLASH_INSTALL) {
-            switch (resultCode) {
+        if(requestCode == SPLASH_INSTALL){
+            switch(resultCode){
                 case Activity.RESULT_OK:
-                    break;
+                break;
                 case Activity.RESULT_CANCELED:
                     enterHome();
                     break;
@@ -328,7 +311,6 @@ public class SplashActivity extends AppCompatActivity {
 
     /**
      * 关流的操作
-     *
      * @param close
      */
     private void Closed(Closeable close) {
@@ -348,12 +330,10 @@ public class SplashActivity extends AppCompatActivity {
     public void enterHome() {
         boolean guidePage = sp.getBoolean("guidePage", true);
         if (guidePage) {
-            startActivity(new Intent(SplashActivity.this, ViewPagerActivity.class));
+            startActivity(new Intent(SplashActivity.this, MainActivity.class));
         } else {
-            startActivity(new Intent(SplashActivity.this, LoginActivity.class));
+            startActivity(new Intent(SplashActivity.this, MainActivity.class));
         }
         finish();
     }
-
-
 }

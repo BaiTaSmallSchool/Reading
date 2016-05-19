@@ -6,7 +6,6 @@ import android.os.Handler;
 import android.os.Message;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
-import android.util.Log;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -65,7 +64,6 @@ public class RegistActivity extends AppCompatActivity {
                     regist_edt_name.setText("");
                     regist_edt_password.setText("");
                     break;
-
             }
             mProgressDialog.dismiss();
         }
@@ -199,7 +197,6 @@ public class RegistActivity extends AppCompatActivity {
                     } else {
                         handler.sendEmptyMessage(REGIST_URL);
                     }
-
                 } catch (IOException e) {
                     handler.sendEmptyMessage(REGIST_IO);
                     e.printStackTrace();
