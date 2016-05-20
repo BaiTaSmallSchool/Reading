@@ -1,17 +1,28 @@
 package onionsss.it.onionsss.activity;
 
 import android.app.ProgressDialog;
+import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
+import android.util.Log;
+import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import org.json.JSONObject;
 
+import java.io.BufferedOutputStream;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
 
 import butterknife.Bind;
@@ -28,12 +39,15 @@ public class RegistActivity extends AppCompatActivity {
     private static final int REGIST_JSON = 3;
     private static final int REGIST_OK = 4;
     private static final int REGIST_NO = 5;
+    private static final int GET_HEAD = 400;
     @Bind(R.id.regist_edt_name)
     EditText regist_edt_name;
     @Bind(R.id.regist_edt_password)
     EditText regist_edt_password;
     @Bind(R.id.regist_btn_regist)
     Button regist_btn_regist;
+    @Bind(R.id.regist_iv_head)
+    ImageView login_iv_head;
 
     private static final String REGISTPATH = "http://169.254.163.120:8080/onionsss/OnionsssServlet";
     private ProgressDialog mProgressDialog;
@@ -76,75 +90,27 @@ public class RegistActivity extends AppCompatActivity {
         ButterKnife.bind(this);
     }
 
-    //用户名重复校验暂时放到提交的时候,后期修改
 
-//    private void initListener() {
-//        /**
-//         * 用户点击输入帐号时 清空hint
-//         */
-//        regist_edt_name.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                regist_edt_name.setHint("请输入用户名");
-//                regist_edt_name.setHintTextColor(Color.GRAY);
-//            }
-//        });
-//        /**
-//         * 直接从账号输入框切换到密码输入框不会触发密码输入框的点击事件
-//         * 设置对editText的焦点变化监听
-//         * 当点击时  判断帐号是否已经被注册
-//         * 如果注册过 就提示用户显示红色
-//         *
-//         */
-//        regist_edt_password.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-//
-//            @Override
-//            public void onFocusChange(View v, boolean hasFocus) {
-//                isRegist();
-//            }
-//        });
-//        /**
-//         * 因为用户可能按回车 所以不会触发点击事件
-//         * 所以我们要监听editText改变时候对帐号进行检测
-//         */
-//        regist_edt_password.addTextChangedListener(new TextWatcher() {
-//            @Override
-//            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-//                isRegist();
-//            }
-//
-//            @Override
-//            public void onTextChanged(CharSequence s, int start, int before, int count) {
-//            }
-//
-//            @Override
-//            public void afterTextChanged(Editable s) {
-//            }
-//        });
-//
-//    }
-//
-//    public void isRegist() {
-//        String name = regist_edt_name.getText().toString().trim();
-//        if (!TextUtils.isEmpty(name)) {
-//            if (ud.queryName(name)) {
-//                regist_edt_name.setText("");
-//                regist_edt_name.setHint("对不起,该用户名已经被注册!");
-//                regist_edt_name.setHintTextColor(Color.RED);
-//                /**
-//                 * 因为帐号重复
-//                 * 所以让用户获得帐号的焦点继续 输入
-//                 */
-//                regist_edt_name.setFocusable(true);
-//                regist_edt_name.setFocusableInTouchMode(true);
-//                regist_edt_name.requestFocus();
-//            }
-//        }
-//
-//    }
+    @OnClick({R.id.regist_btn_regist, R.id.regist_iv_head})
+    public void onClick(View view) {
+        switch (view.getId()) {
+            case R.id.regist_btn_regist:
+                registSubmit();
+                break;
+            case R.id.regist_iv_head:
+                changeHead();
+                break;
+        }
 
-    @OnClick(R.id.regist_btn_regist)
-    public void onClick() {
+    }
+
+    private void changeHead() {
+        Intent intent = new Intent(this, ExplorerActivity.class);
+        intent.setDataAndType(Uri.parse("设置头像"), "image/");
+        startActivityForResult(intent, GET_HEAD);
+    }
+
+    private void registSubmit() {
         final String name = regist_edt_name.getText().toString().trim();
         final String password = regist_edt_password.getText().toString().trim();
         if (!TextUtils.isEmpty(name) && !TextUtils.isEmpty(password)) {
@@ -206,5 +172,56 @@ public class RegistActivity extends AppCompatActivity {
                 }
             }
         }).start();
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        switch (requestCode) {
+            case GET_HEAD:
+                setHead(resultCode, data);
+                break;
+            default:
+                break;
+        }
+
+    }
+
+    private void setHead(int resultCode, Intent data) {
+        String originPath;
+        Bitmap bitmap;
+        //设置头像
+        if (resultCode == RESULT_OK) {
+            BitmapFactory.Options options = new BitmapFactory.Options();
+            options.inJustDecodeBounds = true;
+            originPath = data.getData().getPath();
+            BitmapFactory.decodeFile(originPath, options);
+            int outHeight = options.outHeight;
+            int outWidth = options.outWidth;
+            if ((outWidth > outHeight ? outWidth : outHeight) > 800) {
+                int scale = (outWidth > outHeight ? outWidth : outHeight) / 800;
+                options.inSampleSize = scale;
+                options.inJustDecodeBounds = false;
+                bitmap = BitmapFactory.decodeFile(originPath, options);
+
+            } else {
+                bitmap = BitmapFactory.decodeFile(originPath);
+            }
+            File cacheDir = new File(this.getCacheDir(),"headPic.jpg") ;
+            if (cacheDir.exists()) {
+                cacheDir.delete();
+                Log.d("RegistActivity", "delete");
+            }
+            try {
+                bitmap.compress(Bitmap.CompressFormat.JPEG, 90, new BufferedOutputStream(new FileOutputStream(cacheDir)));
+                login_iv_head.setImageResource(R.mipmap.ic_launcher);
+                login_iv_head.setImageURI(Uri.parse(cacheDir.toString()));
+            } catch (Exception e) {
+                Toast.makeText(this, "图片格式不正确,请重新选择", Toast.LENGTH_SHORT).show();
+                e.printStackTrace();
+            }
+        } else {
+            return;
+        }
     }
 }

@@ -59,6 +59,42 @@ public class SplashActivity extends AppCompatActivity {
     public static final int SPLASH_NO = 6;    //不需要更新
     public static final int SPLASH_INSTALL = 7;    //不需要更新
     private static final int SPLASH_TOAST = 8;
+
+
+    /**
+     * 跳转到对应Activity,便于调试
+     */
+    private Handler DevelopTool = new Handler() {
+        @Override
+        public void handleMessage(Message msg) {
+            switch (msg.what) {
+                case 0:
+                    startActivity(new Intent(SplashActivity.this,ViewPagerActivity.class));
+                    break;
+                case 1:
+                    startActivity(new Intent(SplashActivity.this,LoginActivity.class));
+                    break;
+                case 2:
+                    startActivity(new Intent(SplashActivity.this,MainActivity.class));
+                    break;
+                case 3:
+                    startActivity(new Intent(SplashActivity.this,RegistActivity.class));
+                    break;
+                case 4:
+                    startActivity(new Intent(SplashActivity.this,ExplorerActivity.class));
+                    break;
+                default:
+                    alertDialog.dismiss();
+                    alertDialog = null;
+                    initView();
+                    return;
+            }
+            alertDialog.dismiss();
+            alertDialog = null;
+            finish();
+        }
+    };
+
     private Handler handler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
@@ -84,6 +120,7 @@ public class SplashActivity extends AppCompatActivity {
     private UpdateJson mUj;
     private ProgressDialog mProgressDialog;
     private SharedPreferences sp;
+    private AlertDialog alertDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -95,7 +132,22 @@ public class SplashActivity extends AppCompatActivity {
          * 数据库的测试
          */
 //        dbTest();
-        initView();
+//        initView();
+        developTool();
+    }
+
+    private void developTool() {
+        alertDialog = new AlertDialog.Builder(this)
+                .setTitle("选择需要跳转的Activity")
+                .setSingleChoiceItems(
+                        new String[]{"ViewPager", "LoginActivity", "MainActivity", "RegistActivity", "ExplorerActivity", "默认进程"}
+                        , 0, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        DevelopTool.sendEmptyMessage(which);
+                    }
+                }).create();
+        alertDialog.show();
     }
 
     private void dbTest() {
